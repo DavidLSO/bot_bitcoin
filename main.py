@@ -1,4 +1,4 @@
-from captchas.recaptcha import ReCaptcha
+from PIL import Image
 from selenium import webdriver
 
 
@@ -13,6 +13,24 @@ def execute_login(driver):
     driver.find_element_by_css_selector('#login_form_btc_address').send_keys("sdavidlevy@gmail.com")
     driver.find_element_by_css_selector('#login_form_password').send_keys("123456789")
     driver.find_element_by_css_selector("select#signup_page_captcha_types > option[value='solvemedia']").click()
+    driver.implicitly_wait(2)
+    driver.find_element_by_css_selector("a#adcopy-link-refresh").click()
+    driver.implicitly_wait(50)
+    screen_shot(driver=driver)
+
+
+def screen_shot(driver):
+    location = driver.find_element_by_id("adcopy-puzzle-image").location
+    size = driver.find_element_by_id("adcopy-puzzle-image").size
+    driver.save_screenshot('screenshot.png')
+    im = Image.open('screenshot.png')
+    left = location['x']
+    top = location['y']
+    right = location['x'] + size['width']
+    bottom = location['y'] + size['height']
+
+    im = im.crop((left, top, right, bottom))
+    im.save('screenshot.png')
 
 
 def main():
