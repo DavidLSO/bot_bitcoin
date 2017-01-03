@@ -1,4 +1,5 @@
 # http://scraping.pro/recaptcha-solve-selenium-python/
+# http://takefreebitcoin.com/
 from time import sleep
 
 import pytesseract
@@ -15,8 +16,16 @@ class SolvedMedia:
         self.CURRENT_DRIVER = driver
 
     def extract_text_image(self, im):
-        text = pytesseract.image_to_string(im).split('. ')[1]
-        return text
+        text = pytesseract.image_to_string(im)
+        print(text)
+        return text.split('. ')[1]
+
+    @staticmethod
+    def timer(sec):
+        import time
+        for remaining in range(sec, 0, -1):
+            print("{:2d} seconds remaining.".format(remaining))
+            time.sleep(1)
 
     def screen_shot(self):
         location = self.CURRENT_DRIVER.find_element_by_id("adcopy-puzzle-image").location

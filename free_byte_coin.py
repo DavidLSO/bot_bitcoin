@@ -19,21 +19,14 @@ def execute_login(driver):
     driver.find_element_by_id('login_form').submit()
 
 
-def timer(sec):
-    import time
-    for remaining in range(sec, 0, -1):
-        print("{:2d} seconds remaining.".format(remaining))
-        time.sleep(1)
-
-
 def collect_bit_coin(driver):
     print('Coletando bitcoin ...')
-    timer(10)
+    SolvedMedia.timer(10)
     while True:
         driver.find_element_by_css_selector("select#free_play_captcha_types > option[value='solvemedia']").click()
         SolvedMedia(driver).broken()
         driver.find_element_by_css_selector('input#free_play_form_button').click()
-        timer(60000)
+        SolvedMedia.timer(6000)
 
 
 def main():
