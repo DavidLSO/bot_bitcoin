@@ -1,5 +1,3 @@
-import time
-
 from captchas.captcha import SolvedMedia
 from selenium import webdriver
 
@@ -15,24 +13,34 @@ def execute_login(driver):
     driver.find_element_by_css_selector('#login_form_btc_address').send_keys("sdavidlevy@gmail.com")
     driver.find_element_by_css_selector('#login_form_password').send_keys("Le352623")
     driver.find_element_by_css_selector("select#signup_page_captcha_types > option[value='solvemedia']").click()
-    time.sleep(5)
-    while driver.find_element_by_id('adcopy-outer').is_displayed():
-        SolvedMedia(driver).broken()
-        driver.find_element_by_css_selector('input#login_button').click()
+    SolvedMedia(driver).broken()
+    driver.find_element_by_id('login_form').submit()
+
+
+def timer(sec):
+    import time
+    for remaining in range(sec, 0, -1):
+        print("{:2d} seconds remaining.".format(remaining))
+        time.sleep(1)
 
 
 def collect_bit_coin(driver):
-    driver.find_element_by_css_selector("select#free_play_captcha_types > option[value='solvemedia']").click()
-    time.sleep(5)
+    timer(10)
     while True:
+        driver.find_element_by_css_selector("select#free_play_captcha_types > option[value='solvemedia']").click()
         SolvedMedia(driver).broken()
         driver.find_element_by_css_selector('input#free_play_form_button').click()
-        time.sleep(60000)
+        timer(60000)
 
 
 def main():
     driver = start_drive('https://freebitco.in/')
-    execute_login(driver)
+    try:
+        execute_login(driver)
+    except Exception as e:
+        driver.refresh()
+        execute_login(driver)
+
     collect_bit_coin(driver=driver)
 
 if __name__ == "__main__":

@@ -34,6 +34,7 @@ class SolvedMedia:
 
     def broken(self):
         try:
+            sleep(5)
             self.CURRENT_DRIVER.find_element_by_css_selector("a#adcopy-link-refresh").click()
             sleep(10)
             im = self.screen_shot()
