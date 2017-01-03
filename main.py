@@ -3,12 +3,14 @@ from selenium import webdriver
 
 
 def start_drive(url):
+    print('Inicia driver ...')
     driver = webdriver.Firefox()
     driver.get(url=url)
     return driver
 
 
 def execute_login(driver):
+    print('Logando ...')
     driver.find_element_by_css_selector('li.login_menu_button > a:nth-child(1)').click()
     driver.find_element_by_css_selector('#login_form_btc_address').send_keys("sdavidlevy@gmail.com")
     driver.find_element_by_css_selector('#login_form_password').send_keys("Le352623")
@@ -25,6 +27,7 @@ def timer(sec):
 
 
 def collect_bit_coin(driver):
+    print('Coletando bitcoin ...')
     timer(10)
     while True:
         driver.find_element_by_css_selector("select#free_play_captcha_types > option[value='solvemedia']").click()
@@ -38,6 +41,8 @@ def main():
     try:
         execute_login(driver)
     except Exception as e:
+        print('Erro no login ...')
+        print(e)
         driver.refresh()
         execute_login(driver)
 
