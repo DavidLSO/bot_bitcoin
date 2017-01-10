@@ -23,10 +23,13 @@ def collect_bit_coin(driver):
     print('Coletando bitcoin ...')
     SolvedMedia.timer(10)
     while True:
+        if driver.find_element_by_css_selector('#myModal22 > a:nth-child(2)').is_displayed():
+            driver.find_element_by_css_selector('#myModal22 > a:nth-child(2)').click()
         driver.find_element_by_css_selector("select#free_play_captcha_types > option[value='solvemedia']").click()
         SolvedMedia(driver).broken()
         driver.find_element_by_css_selector('input#free_play_form_button').click()
-        SolvedMedia.timer(6000)
+        if not driver.find_element_by_css_selector('div#adcopy-outer').is_displayed():
+            SolvedMedia.timer(6000)
 
 
 def main():
