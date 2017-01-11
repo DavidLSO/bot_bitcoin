@@ -29,7 +29,7 @@ def collect_bit_coin(driver):
         SolvedMedia(driver).broken()
         driver.find_element_by_css_selector('input#free_play_form_button').click()
         if not driver.find_element_by_css_selector('div#adcopy-outer').is_displayed():
-            SolvedMedia.timer(6000)
+            SolvedMedia.timer(3600)
 
 
 def main():
