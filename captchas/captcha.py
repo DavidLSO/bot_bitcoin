@@ -15,17 +15,11 @@ class SolvedMedia:
     def __init__(self, driver):
         self.CURRENT_DRIVER = driver
 
-    def extract_text_image(self, im):
+    @staticmethod
+    def extract_text_image(im):
         text = pytesseract.image_to_string(im)
         print(text)
         return text.split('. ')[1]
-
-    @staticmethod
-    def timer(sec):
-        import time
-        for remaining in range(sec, 0, -1):
-            print("{:2d} seconds remaining.".format(remaining))
-            time.sleep(1)
 
     def screen_shot(self):
         location = self.CURRENT_DRIVER.find_element_by_id("adcopy-puzzle-image").location
