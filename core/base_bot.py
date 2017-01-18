@@ -6,11 +6,8 @@ from selenium import webdriver
 class BotBase(object):
     def __init__(self, argv, url):
         self.__url = url
-        print('Starting the driver')
-        driver = webdriver.Firefox()
-        driver.get(url=url)
-        self.__driver = driver
         self.__menu__(argv=argv)
+        self.__start_driver__()
 
     @property
     def driver(self):
@@ -34,6 +31,29 @@ class BotBase(object):
         for remaining in range(sec, 0, -1):
             print("{:2d} seconds remaining.".format(remaining))
             time.sleep(1)
+
+    @staticmethod
+    def __request_proxy__():
+        print('Requesting proxy')
+        import requests
+        r = requests.get(url='http://gimmeproxy.com/api/getProxy')
+        return r.json()
+
+    def __set_proxy__(self):
+        print('Creating the profile')
+        data = self.__request_proxy__()
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference("network.proxy.type", 1)
+        profile.set_preference("network.proxy.http", data['ip'])
+        profile.set_preference("network.proxy.http_port", int(data['port']))
+        profile.update_preferences()
+        return profile
+
+    def __start_driver__(self):
+        print('Starting the driver')
+
+        self.__driver = webdriver.Firefox(firefox_profile=self.__set_proxy__())
+        self.__driver.get(url=self.url)
 
     def __menu__(self, argv):
         try:
