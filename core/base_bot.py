@@ -52,7 +52,9 @@ class BotBase(object):
     def __start_driver__(self):
         print('Starting the driver')
 
-        self.__driver = webdriver.Firefox(firefox_profile=self.__set_proxy__())
+        #self.__driver = webdriver.Firefox(firefox_profile=self.__set_proxy__())
+        self.__driver = webdriver.PhantomJS()
+        self.__driver.set_window_size(1120, 550)
         self.__driver.get(url=self.url)
 
     def __menu__(self, argv):
