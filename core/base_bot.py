@@ -1,7 +1,8 @@
 import getopt
 import sys
+import requests
 from selenium import webdriver
-
+import settings
 
 class BotBase(object):
     def __init__(self, argv, url):
@@ -35,26 +36,24 @@ class BotBase(object):
     @staticmethod
     def __request_proxy__():
         print('Requesting proxy')
-        import requests
         r = requests.get(url='http://gimmeproxy.com/api/getProxy')
-        return r.json()
+        return requests.utils.get_encodings_from_content(r)
 
     def __set_proxy__(self):
         print('Creating the profile')
         data = self.__request_proxy__()
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference("network.proxy.type", 1)
-        profile.set_preference("network.proxy.http", data['ip'])
-        profile.set_preference("network.proxy.http_port", int(data['port']))
-        profile.update_preferences()
-        return profile
+        return [
+            '--proxy={0}'.format(data['ipPort']),
+            '--proxy-type=https',
+            ]
 
     def __start_driver__(self):
         print('Starting the driver')
-
-        #self.__driver = webdriver.Firefox(firefox_profile=self.__set_proxy__())
-        self.__driver = webdriver.PhantomJS()
-        self.__driver.set_window_size(1120, 550)
+        dcap = dict(webdriver.DesiredCapabilities.PHANTOMJS)
+        dcap["phantomjs.page.settings.userAgent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
+        #self.__driver = webdriver.PhantomJS(executable_path=settings.PHANTOMJS_DRIVER, service_args=self.__set_proxy__(), desired_capabilities=dcap)
+        self.__driver = webdriver.PhantomJS(executable_path=settings.PHANTOMJS_DRIVER, desired_capabilities=dcap)
+        self.__driver.maximize_window()
         self.__driver.get(url=self.url)
 
     def __menu__(self, argv):

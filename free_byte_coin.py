@@ -1,5 +1,5 @@
 import sys
-
+from selenium.webdriver.common.by import By
 from captchas.captcha import SolvedMedia
 from core.base_bot import BotBase
 
@@ -8,7 +8,9 @@ class FreeBitCoin(BotBase):
     def execute_login(self):
         print('Initiating login process')
         driver = self.driver
+        #find_element_by_xpath
         driver.find_element_by_css_selector('li.login_menu_button > a:nth-child(1)').click()
+        #driver.find_element(By.CSS_SELECTOR("'li.login_menu_button > a:nth-child(1)'")).click()
         driver.find_element_by_css_selector('#login_form_btc_address').send_keys(self.login)
         driver.find_element_by_css_selector('#login_form_password').send_keys(self.password)
         driver.find_element_by_css_selector("select#signup_page_captcha_types > option[value='solvemedia']").click()
