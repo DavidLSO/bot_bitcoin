@@ -8,9 +8,7 @@ class FreeBitCoin(BotBase):
     def execute_login(self):
         print('Initiating login process')
         driver = self.driver
-        #find_element_by_xpath
         driver.find_element_by_css_selector('li.login_menu_button > a:nth-child(1)').click()
-        #driver.find_element(By.CSS_SELECTOR("'li.login_menu_button > a:nth-child(1)'")).click()
         driver.find_element_by_css_selector('#login_form_btc_address').send_keys(self.login)
         driver.find_element_by_css_selector('#login_form_password').send_keys(self.password)
         driver.find_element_by_css_selector("select#signup_page_captcha_types > option[value='solvemedia']").click()
@@ -18,12 +16,19 @@ class FreeBitCoin(BotBase):
         SolvedMedia(driver).broken()
         print('Sending form')
         driver.find_element_by_id('login_form').submit()
+        print(driver.current_url)
+        try:
+            if driver.find_element_by_css_selector('#login_form_btc_address').is_displayed():
+                self.execute_login()
+        except:
+            print('Login success')
 
     def collect_bit_coin(self):
         print('Starting bitcoin collection')
         self.timer(10)
         driver = self.driver
         while True:
+            print(driver.current_url)
             if driver.find_element_by_css_selector('#myModal22 > a:nth-child(2)').is_displayed():
                 driver.find_element_by_css_selector('#myModal22 > a:nth-child(2)').click()
             driver.find_element_by_css_selector("select#free_play_captcha_types > option[value='solvemedia']").click()

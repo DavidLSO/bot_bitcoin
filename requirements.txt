@@ -3,3 +3,4 @@ Pillow==4.0.0
 pytesseract==0.1.6
 requests==2.12.5
 selenium==2.53.6
+numpy==1.12.0
