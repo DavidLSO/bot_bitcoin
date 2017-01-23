@@ -1,0 +1,3 @@
+# Decouple
+PHANTOMJS_DRIVER=phantomjs
+PYTESSERACT_PATH=tesseract

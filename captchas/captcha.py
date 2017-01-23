@@ -6,6 +6,7 @@ import pytesseract
 from PIL import Image
 import numpy as np
 
+
 class SolvedMedia:
     """
     http://solvemedia.com/publishers/captcha-type-in
