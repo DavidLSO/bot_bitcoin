@@ -1,5 +1,4 @@
 import sys
-from selenium.webdriver.common.by import By
 from captchas.captcha import SolvedMedia
 from core.base_bot import BotBase
 
@@ -12,16 +11,15 @@ class FreeBitCoin(BotBase):
         driver.find_element_by_css_selector('#login_form_btc_address').send_keys(self.login)
         driver.find_element_by_css_selector('#login_form_password').send_keys(self.password)
         driver.find_element_by_css_selector("select#signup_page_captcha_types > option[value='solvemedia']").click()
-        print('Realizing the breaking of captcha')
-        SolvedMedia(driver).broken()
-        print('Sending form')
-        driver.find_element_by_id('login_form').submit()
-        print(driver.current_url)
-        try:
-            if driver.find_element_by_css_selector('#login_form_btc_address').is_displayed():
-                self.execute_login()
-        except:
-            print('Login success')
+        counter = 0
+        while driver.current_url == 'https://freebitco.in/':
+            counter +=1
+            driver.find_element_by_css_selector("#adcopy-link-refresh").click()
+            print('Realizing the breaking of captcha: try {0}'.format(counter))
+            SolvedMedia(driver).broken()
+            print('Sending form')
+            driver.find_element_by_id('login_form').submit()
+        print('Login success')
 
     def collect_bit_coin(self):
         print('Starting bitcoin collection')

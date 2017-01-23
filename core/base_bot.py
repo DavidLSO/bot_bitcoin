@@ -37,7 +37,7 @@ class BotBase(object):
     def __request_proxy__():
         print('Requesting proxy')
         r = requests.get(url='http://gimmeproxy.com/api/getProxy')
-        return requests.utils.get_encodings_from_content(r)
+        return r.json()
 
     def __set_proxy__(self):
         print('Creating the profile')

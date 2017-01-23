@@ -17,7 +17,7 @@ class SolvedMedia:
     @staticmethod
     def extract_text_image(im):
         pytesseract.pytesseract.tesseract_cmd = settings.PYTESSERACT_PATH
-        text = ' '.join(pytesseract.image_to_string(im, lang='eng').split('\n')).strip()
+        text = ' '.join(pytesseract.image_to_string(im, lang='eng',).split('\n')).strip()
         print(text)
         return text
 
